@@ -293,3 +293,113 @@ Insecure design vulnerabilities are harder to mitigate post-implementation. By e
 
 ### **Key Takeaway**:
 **Insecure design flaws arise from poor planning and inadequate security measures during the design phase. To prevent these issues, it’s crucial to integrate security considerations early in the software development lifecycle (SDLC), using strategies like threat modeling, secure patterns, and adhering to established security principles.**
+
+### **Requirements and Resource Management**
+
+Effective requirements and resource management is critical to ensure the security, functionality, and sustainability of an application. Below is a breakdown of the key activities involved:
+
+---
+
+### **1. Collecting and Negotiating Business Requirements**
+
+#### **Purpose:**
+- Understand the application’s purpose, its interaction with users, and the business’s goals.
+- Identify the **security protection requirements** such as:
+  - **Confidentiality**: Protecting sensitive data from unauthorized access.
+  - **Integrity**: Ensuring data is not altered or tampered with.
+  - **Availability**: Ensuring the application is accessible as needed.
+  - **Authenticity**: Verifying the legitimacy of users and data sources.
+
+#### **Steps:**
+1. Collaborate with stakeholders to identify the core functionality of the application.
+2. Highlight sensitive data assets and their protection needs.
+3. Identify expected **business logic**, ensuring it aligns with regulatory and compliance standards.
+4. Assess the level of exposure of the application:
+   - Publicly accessible vs. internal use.
+   - Risk posed by malicious actors and potential threats.
+
+#### **Example:**
+For a banking app:
+- **Confidentiality**: Encrypt user credentials and transaction data.
+- **Integrity**: Prevent manipulation of account balances during transactions.
+- **Availability**: Ensure the system is online 24/7 to handle global users.
+- **Authenticity**: Implement strong authentication (e.g., MFA) for user login.
+
+---
+
+### **2. Tenant Segregation and Access Control**
+
+#### **Purpose:**
+- If the application is multi-tenant (used by multiple organizations or users), decide whether each tenant’s data must be isolated or if shared access control suffices.
+
+#### **Steps:**
+1. Determine whether strict data segregation is necessary based on sensitivity and regulatory requirements.
+2. Evaluate the need for logical or physical separation:
+   - Logical: Separate databases or schemas for each tenant.
+   - Physical: Separate servers or infrastructure for critical tenants.
+3. Define access control policies ensuring users only access data relevant to their role and tenant.
+
+#### **Example:**
+For a SaaS HR platform:
+- Segregate employee records by company (tenant).
+- Ensure that an HR manager from Company A cannot view Company B’s records.
+
+---
+
+### **3. Compiling Technical Requirements**
+
+#### **Functional Security Requirements:**
+- Authentication: Methods to verify users, e.g., passwords, MFA.
+- Authorization: Rules defining who can access or modify specific data or functionalities.
+- Data Encryption: Encrypting data in transit and at rest.
+- Secure APIs: Protecting APIs with rate limiting, OAuth2, and input validation.
+
+#### **Non-Functional Security Requirements:**
+- Performance: Ensure security controls (e.g., encryption) do not degrade performance.
+- Scalability: Design security measures that scale with user demand.
+- Compliance: Adhere to standards like GDPR, HIPAA, or PCI-DSS.
+
+#### **Example:**
+- Encrypt all database transactions using AES-256.
+- Ensure API endpoints respond within 200ms even with input validation and token verification.
+
+---
+
+### **4. Planning and Budgeting**
+
+#### **Purpose:**
+- Allocate sufficient resources and finances to meet security and functionality goals across all project stages.
+
+#### **Steps:**
+1. **Design Phase:**
+   - Conduct threat modeling to identify potential risks early.
+   - Include architecture reviews for security considerations.
+
+2. **Build Phase:**
+   - Invest in secure coding practices and tools like static application security testing (SAST).
+   - Train developers in secure coding principles.
+
+3. **Testing Phase:**
+   - Allocate budget for penetration testing, code reviews, and automated testing tools (e.g., dynamic application security testing - DAST).
+   - Perform security regression testing for every update.
+
+4. **Operational Phase:**
+   - Plan for ongoing maintenance, including vulnerability patching and incident response.
+   - Allocate resources for logging, monitoring, and SIEM (Security Information and Event Management) tools.
+
+#### **Example:**
+- Budget breakdown for a healthcare app:
+  - Design: $20,000 for threat modeling and architecture validation.
+  - Build: $50,000 for secure coding tools and developer training.
+  - Testing: $30,000 for penetration tests and automated security checks.
+  - Operations: $25,000 annually for logging, monitoring, and maintenance.
+
+---
+
+### **Key Takeaways**
+
+- **Proactive Management**: Security must be built into the project lifecycle from the start, not retrofitted later.
+- **Stakeholder Collaboration**: Work with business, technical, and security teams to ensure all requirements are identified and prioritized.
+- **Resource Allocation**: Ensure security measures are adequately funded and planned for every stage of development and operation.
+
+By addressing these factors comprehensively, you can build applications that are robust, secure, and aligned with business and compliance goals.
