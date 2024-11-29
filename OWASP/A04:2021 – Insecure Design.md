@@ -1,7 +1,8 @@
+<div style="display: flex; align-items: center; justify-content: center; text-align: center; padding: 20px; font-family: Arial, sans-serif;">
+    <h1>A04:2021 – <strong>Insecure Design</strong></h1>
+</div>
 
-### A04:2021 – **Insecure Design**  
-
-#### Overview
+### Overview
 **Insecure Design** is a new category introduced in the 2021 OWASP Top 10, highlighting risks stemming from **design and architectural flaws** in applications. These flaws go beyond implementation mistakes, focusing instead on insufficient forethought during the design phase of application development. 
 
 The category calls for more proactive practices like:
@@ -11,7 +12,7 @@ The category calls for more proactive practices like:
 
 It emphasizes moving beyond traditional "shift-left" practices, which focus on security in the coding phase, to include **pre-coding activities** that embody the principles of "Secure by Design."
 
----
+
 
 ### Key Factors and Statistics
 1. **Common Weakness Enumerations (CWEs) Mapped**: 40  
@@ -54,25 +55,8 @@ This category underscores the importance of:
 - Reducing the cost of security fixes by preventing flaws **before coding begins**.
 - Training developers and architects on secure design practices.
 
----
 
-### Practical Takeaways
-1. **Prevention Strategies**:
-   - Conduct **threat modeling sessions** during the design phase.
-   - Use **secure design frameworks** and principles.
-   - Leverage tools for **design-time validation**, such as automated security architecture analysis.
 
-2. **Examples of Poor Design**:
-   - Storing passwords in plaintext instead of hashing them securely.
-   - Allowing verbose error messages that leak sensitive information (e.g., stack traces in production).
-   - Failing to implement least privilege for sensitive operations or users.
-
-3. **Key Challenges**:
-   - Lack of awareness about design risks among teams.
-   - Pressure to deliver features quickly, sacrificing security considerations.
-   - Over-reliance on downstream testing or security fixes rather than addressing root causes.
-
----
 ### **Insecure Design: Description**
 
 **Insecure Design** is a category of vulnerabilities that stems from **missing or ineffective security controls in the design phase** of a system or software. It focuses on weaknesses introduced by flawed architectural decisions rather than coding or implementation errors.
