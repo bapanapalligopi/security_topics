@@ -1085,3 +1085,123 @@ CWE-693 focuses on failures related to protecting data and systems through insuf
 - Regularly audit your systems for potential weaknesses.
 
 By doing so, you minimize the risks of unauthorized access, data breaches, and other security incidents.
+Here’s an expanded explanation of the scenarios for **CWE-209**, **CWE-256**, **CWE-501**, and **CWE-522**, with detailed *Do's* and *Don'ts*:
+
+---
+
+### **CWE-209: Generation of Error Message Containing Sensitive Information**
+
+#### **Scenario**:
+- If a web application displays stack traces, SQL errors, or sensitive system paths, attackers can use this information to understand the internal workings of the application.
+
+#### **Do's**:
+1. **Use Generic Error Messages**:
+   - Return messages like *"An unexpected error occurred"* without revealing details.
+2. **Log Errors Securely**:
+   - Maintain detailed logs for debugging purposes, but restrict access to authorized personnel.
+3. **Sanitize Output**:
+   - Filter sensitive data before sending it to the client.
+4. **Enable Fail-Safe Configurations**:
+   - Ensure error reporting is disabled in production environments (e.g., disable `DEBUG` mode in frameworks).
+
+#### **Don'ts**:
+1. **Expose Stack Traces**:
+   - Avoid showing exceptions such as `NullPointerException at line 45`.
+2. **Display Database Errors**:
+   - Never reveal query failures (e.g., `SQL syntax error near 'DROP TABLE'`).
+3. **Show Configuration Details**:
+   - Avoid outputting paths, usernames, or sensitive data in errors.
+
+---
+
+### **CWE-256: Unprotected Storage of Credentials**
+
+#### **Scenario**:
+- Credentials stored in plaintext in configuration files, logs, or databases can be easily accessed and exploited by attackers.
+
+#### **Do's**:
+1. **Encrypt Credentials**:
+   - Use strong encryption standards like AES-256 for storing sensitive data.
+2. **Use Secure Storage Solutions**:
+   - Store credentials in secure vaults (e.g., HashiCorp Vault, AWS Secrets Manager).
+3. **Apply Access Control**:
+   - Restrict access to credential storage to authorized users only.
+4. **Regularly Rotate Credentials**:
+   - Implement policies to update passwords and API keys periodically.
+
+#### **Don'ts**:
+1. **Hardcode Credentials**:
+   - Avoid embedding secrets (e.g., API keys) directly in the code.
+2. **Store Plaintext Passwords**:
+   - Never leave credentials unencrypted in files or databases.
+3. **Share Sensitive Files**:
+   - Avoid sharing configuration files with credentials in unsecured channels.
+
+---
+
+### **CWE-501: Trust Boundary Violation**
+
+#### **Scenario**:
+- When data crossing from an untrusted source (e.g., user input) to a trusted boundary (e.g., backend system) is not properly validated, it leads to vulnerabilities like SQL injection or cross-site scripting (XSS).
+
+#### **Do's**:
+1. **Validate Input**:
+   - Use strict input validation to ensure only expected data formats are processed.
+2. **Apply Least Privilege**:
+   - Minimize trust given to external systems or untrusted inputs.
+3. **Implement Access Control**:
+   - Authenticate and authorize data flows across trust boundaries.
+4. **Use Threat Modeling**:
+   - Identify potential vulnerabilities at trust boundaries during the design phase.
+
+#### **Don'ts**:
+1. **Trust All Input**:
+   - Avoid assuming data from APIs or user input is valid without checks.
+2. **Omit Input Sanitization**:
+   - Never process data directly from untrusted sources without cleansing.
+3. **Fail to Implement Audit Logs**:
+   - Ensure all boundary-crossing activities are logged and monitored.
+
+---
+
+### **CWE-522: Insufficiently Protected Credentials**
+
+#### **Scenario**:
+- Credentials transmitted over HTTP or stored with weak encryption (e.g., MD5 hashing) are vulnerable to interception or brute-force attacks.
+
+#### **Do's**:
+1. **Use HTTPS**:
+   - Encrypt data in transit to prevent interception.
+2. **Implement Strong Encryption**:
+   - Use hashing algorithms like bcrypt or Argon2 for password storage.
+3. **Use Multi-Factor Authentication (MFA)**:
+   - Strengthen security by requiring additional authentication factors.
+4. **Regular Penetration Testing**:
+   - Test the security of credential storage and transmission regularly.
+
+#### **Don'ts**:
+1. **Transmit Over HTTP**:
+   - Avoid using unsecured protocols for authentication.
+2. **Store in Browser Storage**:
+   - Do not store sensitive credentials in local storage or cookies without encryption.
+3. **Use Weak Hashing**:
+   - Avoid MD5, SHA1, or other obsolete hashing methods for password storage.
+
+---
+
+### **Real-World Examples**
+
+#### **CWE-209: Exposing Stack Traces**:
+- A Python web application running in `DEBUG` mode shows full stack traces to users when an error occurs. An attacker identifies the database backend and exploits it with SQL injection.
+
+#### **CWE-256: Storing Plaintext API Keys**:
+- A developer hardcodes an API key in the JavaScript code of a web application. An attacker extracts it from the browser and uses it to access sensitive backend services.
+
+#### **CWE-501: Cross-Site Scripting (XSS)**:
+- A comment form accepts HTML input and displays it on the webpage without sanitization. Attackers inject malicious scripts to steal users' cookies.
+
+#### **CWE-522: Weak Hashing**:
+- An e-commerce website stores passwords hashed using MD5. An attacker with database access quickly cracks the hashes using rainbow tables.
+
+---
+
