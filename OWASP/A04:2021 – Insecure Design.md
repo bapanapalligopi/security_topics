@@ -61,9 +61,7 @@ This category underscores the importance of:
 
 **Insecure Design** is a category of vulnerabilities that stems from **missing or ineffective security controls in the design phase** of a system or software. It focuses on weaknesses introduced by flawed architectural decisions rather than coding or implementation errors.
 
----
-
-### **Key Characteristics**
+## **Key Characteristics**
 1. **Not the Source of All Risks**:
    - While many risks in the OWASP Top 10 arise from implementation issues, **Insecure Design** focuses on **flaws in the foundational architecture or design decisions**.
    - Example: A poorly designed user role management system where administrative privileges are granted without proper validation.
@@ -86,8 +84,6 @@ This category underscores the importance of:
    - Once a security control is omitted during design, no implementation excellence can fix the gap.
    - Example: If no data validation is planned during design, implementing code without any validation will leave the system exposed.
 
----
-
 ### **Factors Leading to Insecure Design**
 1. **Lack of Threat Modeling**:
    - Failing to identify potential attack scenarios and design corresponding defenses.
@@ -100,8 +96,6 @@ This category underscores the importance of:
 3. **Failure to Use Secure Design Principles**:
    - Not leveraging proven security frameworks, patterns, or guidelines.
    - Example: Designing a password reset process without proper identity verification.
-
----
 
 ### **Prevention and Remediation**
 1. **Incorporate Security in Design**:
@@ -120,169 +114,148 @@ This category underscores the importance of:
    - Use established patterns like **zero-trust architectures** or secure software development lifecycle (SDLC) practices.
    - Example: Employ security-focused design templates for cloud-based systems.
 
----
-
 ### **Examples of Insecure Design**
 1. Designing a web application that does not plan for **session expiration**, allowing attackers to hijack idle sessions.
 2. Creating a financial system without **fraud detection mechanisms**, exposing the system to repeated unauthorized transactions.
 3. Failing to encrypt sensitive data like user credentials during the design of a storage system.
 
-**Key Insight**: Addressing **Insecure Design** requires organizations to focus on security early in the development lifecycle and continuously integrate security considerations into the architectural process.
+**Key Insight**: Addressing **Insecure Design** requires organizations to focus on security early in the development lifecycle and continuously integrate security considerations into the architectural process.Insecure design vulnerabilities are harder to mitigate post-implementation. By embedding security early in the software development lifecycle, organizations can significantly lower the risks and costs associated with these flaws.
 
-### Final Notes
-Insecure design vulnerabilities are harder to mitigate post-implementation. By embedding security early in the software development lifecycle, organizations can significantly lower the risks and costs associated with these flaws.
 ### **Examples of Insecure Design with Detailed Explanations**
 
----
+## **Example 1: Lack of Session Expiration**
 
-### **Example 1: Lack of Session Expiration**
-
-#### Scenario:
+### Scenario:
 - A web application for online shopping allows users to log in and shop without properly managing **session expiration**.
 - Once a user logs in, their session token remains valid indefinitely until they explicitly log out.
 
-#### Issue:
+### Issue:
 - **Insecure Design**: The system was designed without considering scenarios where session tokens could be misused if the user closes the browser without logging out.
 - Attackers could obtain session tokens (via session fixation, network sniffing, or browser exploits) and use them to impersonate the user.
 
-#### Consequences:
+### Consequences:
 - Unauthorized access to accounts, leading to financial theft, personal data exposure, or fraudulent orders.
 
-#### Prevention:
+### Prevention:
 1. During the design phase, implement a session expiration mechanism:
    - Session tokens should expire after a period of inactivity (e.g., 15 minutes).
    - Use sliding expiration to extend the session for active users.
 2. Include session invalidation during logout or when a token is refreshed.
 
-#### Outcome of Secure Design:
+### Outcome of Secure Design:
 - Even if an attacker obtains a session token, it would expire within a short window, reducing the risk of misuse.
-
----
 
 ### **Example 2: Missing Multi-Factor Authentication (MFA)**
 
-#### Scenario:
+## Scenario:
 - A banking application requires only a username and password for login. No additional layer of authentication (e.g., MFA) is implemented.
 
-#### Issue:
+### Issue:
 - **Insecure Design**: The system design fails to account for the high risks associated with banking systems, such as credential theft.
 - A phishing attack could trick users into sharing their login details, allowing attackers to access their accounts.
 
-#### Consequences:
+### Consequences:
 - Unauthorized access to sensitive information and the ability to transfer funds, leading to financial loss and reputational damage.
 
-#### Prevention:
+### Prevention:
 1. During the design phase, integrate **MFA**:
    - Add an additional layer, such as one-time passwords (OTPs) sent via SMS/email or authenticator apps.
    - Use biometric verification for mobile users (e.g., fingerprint or facial recognition).
 2. Ensure MFA is required for sensitive actions like adding a new payee or transferring large sums.
 
-#### Outcome of Secure Design:
+### Outcome of Secure Design:
 - Even if an attacker obtains the username and password, the lack of access to the second authentication factor prevents unauthorized access.
 
----
 
-### **Example 3: Poor Role-Based Access Control (RBAC)**
+## **Example 3: Poor Role-Based Access Control (RBAC)**
 
-#### Scenario:
+### Scenario:
 - An enterprise management system provides access to various functionalities (e.g., viewing reports, managing users, and altering financial records).
 - All employees, including junior staff, have equal access rights because the system was not designed with granular roles.
 
-#### Issue:
+### Issue:
 - **Insecure Design**: The system doesn’t enforce the principle of **least privilege**, where users are granted only the minimum access necessary to perform their duties.
 - A junior employee could accidentally or maliciously alter financial records, leading to compliance violations or fraud.
 
-#### Consequences:
+### Consequences:
 - Unauthorized access to sensitive operations, accidental data corruption, or deliberate sabotage.
 
-#### Prevention:
+### Prevention:
 1. During the design phase, define clear user roles and their permissions:
    - Example roles: **Admin**, **Manager**, and **Employee**.
    - Admins manage users and configurations; Managers view reports; Employees access their specific tasks.
 2. Incorporate role-based access checks at every functionality level.
 
-#### Outcome of Secure Design:
+### Outcome of Secure Design:
 - Employees are limited to their assigned functionalities, reducing the risk of misuse or accidents.
 
----
 
-### **Example 4: Unencrypted Sensitive Data**
+## **Example 4: Unencrypted Sensitive Data**
 
-#### Scenario:
+### Scenario:
 - A healthcare system stores patient records, including personal details and medical history, in a database. The system design doesn’t include encryption for stored data.
 
-#### Issue:
+### Issue:
 - **Insecure Design**: Data is stored in plain text, making it vulnerable to unauthorized access if the database is breached.
 - Attackers gaining access to the database can view and misuse sensitive patient information.
 
-#### Consequences:
+### Consequences:
 - Violations of data privacy laws like HIPAA, fines, lawsuits, and reputational damage.
 
-#### Prevention:
+### Prevention:
 1. During the design phase, implement **encryption for sensitive data at rest**:
    - Use strong encryption algorithms like AES-256.
    - Protect encryption keys using secure key management techniques.
 2. Enforce **data masking** for non-essential users to reduce unnecessary exposure.
 
-#### Outcome of Secure Design:
+### Outcome of Secure Design:
 - Even if attackers breach the database, encrypted data is unreadable without decryption keys, reducing the risk of sensitive data exposure.
 
----
+## **Example 5: No Rate Limiting on Login Attempts**
 
-### **Example 5: No Rate Limiting on Login Attempts**
-
-#### Scenario:
+### Scenario:
 - An e-commerce platform allows users to log in without any restrictions on the number of failed login attempts.
 
-#### Issue:
+### Issue:
 - **Insecure Design**: The system fails to mitigate brute force attacks where an attacker repeatedly attempts password guesses.
 - An attacker could programmatically try thousands of passwords until they gain access to an account.
 
-#### Consequences:
+### Consequences:
 - Accounts get compromised, leading to fraud, identity theft, and loss of customer trust.
 
-#### Prevention:
+### Prevention:
 1. During the design phase, incorporate rate limiting:
    - Allow only a certain number of failed attempts (e.g., 5) within a specific time frame.
    - Lock the account temporarily or require CAPTCHA after multiple failed attempts.
 2. Log and monitor suspicious login attempts for further investigation.
 
-#### Outcome of Secure Design:
+### Outcome of Secure Design:
 - Brute force attempts are thwarted as attackers are locked out after a few failed attempts.
 
----
+## **Example 6: Lack of Secure Default Settings**
 
-### **Example 6: Lack of Secure Default Settings**
-
-#### Scenario:
+### Scenario:
 - A cloud-based document-sharing application is launched with all documents publicly accessible by default.
 
-#### Issue:
+### Issue:
 - **Insecure Design**: The default settings do not prioritize security. Users might unknowingly expose sensitive documents.
 - Attackers could easily search and access public documents using automated tools.
 
-#### Consequences:
+### Consequences:
 - Leakage of intellectual property, sensitive business documents, and customer data.
 
-#### Prevention:
+### Prevention:
 1. During the design phase, configure **secure defaults**:
    - Set documents to private by default.
    - Require explicit user action to make documents public.
 2. Provide clear user notifications about the implications of changing default settings.
 
-#### Outcome of Secure Design:
+### Outcome of Secure Design:
 - Sensitive documents remain private unless explicitly shared, reducing accidental data leaks.
 
----
-
-### **Key Takeaway**:
-**Insecure design flaws arise from poor planning and inadequate security measures during the design phase. To prevent these issues, it’s crucial to integrate security considerations early in the software development lifecycle (SDLC), using strategies like threat modeling, secure patterns, and adhering to established security principles.**
-
-### **Requirements and Resource Management**
+## **Requirements and Resource Management**
 
 Effective requirements and resource management is critical to ensure the security, functionality, and sustainability of an application. Below is a breakdown of the key activities involved:
-
----
 
 ### **1. Collecting and Negotiating Business Requirements**
 
@@ -309,8 +282,6 @@ For a banking app:
 - **Availability**: Ensure the system is online 24/7 to handle global users.
 - **Authenticity**: Implement strong authentication (e.g., MFA) for user login.
 
----
-
 ### **2. Tenant Segregation and Access Control**
 
 #### **Purpose:**
@@ -328,8 +299,6 @@ For a SaaS HR platform:
 - Segregate employee records by company (tenant).
 - Ensure that an HR manager from Company A cannot view Company B’s records.
 
----
-
 ### **3. Compiling Technical Requirements**
 
 #### **Functional Security Requirements:**
@@ -346,8 +315,6 @@ For a SaaS HR platform:
 #### **Example:**
 - Encrypt all database transactions using AES-256.
 - Ensure API endpoints respond within 200ms even with input validation and token verification.
-
----
 
 ### **4. Planning and Budgeting**
 
@@ -378,23 +345,10 @@ For a SaaS HR platform:
   - Testing: $30,000 for penetration tests and automated security checks.
   - Operations: $25,000 annually for logging, monitoring, and maintenance.
 
----
-
-### **Key Takeaways**
-
-- **Proactive Management**: Security must be built into the project lifecycle from the start, not retrofitted later.
-- **Stakeholder Collaboration**: Work with business, technical, and security teams to ensure all requirements are identified and prioritized.
-- **Resource Allocation**: Ensure security measures are adequately funded and planned for every stage of development and operation.
-
-By addressing these factors comprehensively, you can build applications that are robust, secure, and aligned with business and compliance goals.
-
-
-### **Secure Design**
+## **Secure Design**
 
 **Definition:**
 Secure design is a proactive approach and methodology for developing applications with robust defenses against known attack methods. It emphasizes continual threat evaluation and integration of security measures from the initial design phase through testing and implementation.
-
----
 
 ### **Key Principles of Secure Design**
 
@@ -440,15 +394,11 @@ Secure design is a proactive approach and methodology for developing application
      - Ensure tokens expire in 10 minutes.
      - Log all password reset attempts for audit purposes.
 
----
-
 ### **Secure Design is Not an Add-On**
 
 - Secure design must be integrated from the **initial stages** of development.
 - It is **not a tool** or feature that can be retrofitted into existing software.
 - It requires cultural adoption, continuous refinement, and commitment from all stakeholders.
-
----
 
 ### **Steps to Implement Secure Design**
 
@@ -500,12 +450,10 @@ Secure design is a proactive approach and methodology for developing application
 
 By incorporating secure design principles, the feature becomes robust against threats like malware injection, excessive resource consumption, and unauthorized access to sensitive files.
 
----
-### **Secure Development Lifecycle (SDLC)**
+
+## **Secure Development Lifecycle (SDLC)**
 
 A **Secure Development Lifecycle** (SDLC) is a structured approach to ensuring that security is considered and integrated at every phase of software development, from the initial design to the final deployment and maintenance. By embedding security practices into the development process, organizations can minimize vulnerabilities, prevent attacks, and ensure software robustness.
-
----
 
 ### **Key Components of Secure Development Lifecycle (SDLC)**
 
@@ -534,7 +482,6 @@ A **Secure Development Lifecycle** (SDLC) is a structured approach to ensuring t
    - A threat modeling exercise identifies threats, attacks, and vulnerabilities, allowing development teams to design mitigations or controls proactively.
    - **Example:** During the design phase, developers conduct a threat modeling session to identify how attackers could exploit data flows, such as using man-in-the-middle attacks or data leakage due to improper access control.
 
----
 
 ### **Incorporating Security Throughout the SDLC**
 
@@ -562,7 +509,6 @@ A **Secure Development Lifecycle** (SDLC) is a structured approach to ensuring t
    - Regularly update the software to address new vulnerabilities and incorporate security patches. This phase should also involve monitoring and logging to detect anomalies or security incidents.
    - **Example:** Regularly patch the system’s underlying OS and libraries for vulnerabilities and conduct periodic security audits.
 
----
 
 ### **Leveraging OWASP Software Assurance Maturity Model (SAMM)**
 
@@ -576,9 +522,6 @@ The **OWASP Software Assurance Maturity Model (SAMM)** is a framework that helps
 
 **Example:** By using SAMM, an organization may assess its current maturity level in secure coding practices, threat modeling, and security testing. SAMM could highlight gaps in their SDLC, such as the lack of regular security training for developers or the absence of threat modeling during the design phase. The organization can then create a roadmap to implement best practices like regular code reviews or integrating automated security testing into the CI/CD pipeline.
 
----
-
-### **Conclusion**
 
 A **Secure Development Lifecycle (SDLC)** is essential for building secure software that can withstand evolving threats. By incorporating practices like secure design patterns, threat modeling, and security tooling, and following structured frameworks like **OWASP SAMM**, organizations can ensure that security is an integral part of their development process. Engaging security specialists from the beginning of the project and continuing to involve them throughout the lifecycle of the software is crucial to minimizing vulnerabilities and building resilient systems.
 ### **Conclusion**
@@ -589,8 +532,6 @@ Secure design ensures applications are built with security as a foundation, not 
 Preventing insecure design requires a proactive approach to security and privacy from the very beginning of the software development process. By implementing secure design practices, leveraging security tools, and following secure development lifecycles, organizations can create robust software that is resilient to common vulnerabilities.
 
 Here’s a breakdown of how to prevent insecure design with practical steps:
-
----
 
 ### 1. **Establish and Use a Secure Development Lifecycle (SDLC) with AppSec Professionals**
 
@@ -604,7 +545,6 @@ Here’s a breakdown of how to prevent insecure design with practical steps:
 
 - **Example:** During the planning phase, consult AppSec specialists to determine the security controls required for different components of the application, such as authentication mechanisms, encryption protocols, or data storage protections.
 
----
 
 ### 2. **Establish and Use a Library of Secure Design Patterns or Paved Road Ready-to-Use Components**
 
@@ -617,8 +557,6 @@ Here’s a breakdown of how to prevent insecure design with practical steps:
 
 - **Example:** Develop a **secure authentication pattern** (e.g., using OAuth2.0 or JWT for authorization) that can be reused across multiple applications or services within your organization.
 
----
-
 ### 3. **Use Threat Modeling for Critical Authentication, Access Control, Business Logic, and Key Flows**
 
 - **What it involves:** **Threat modeling** helps identify potential security risks early in the development process. Focus on critical aspects like **authentication**, **access control**, **business logic**, and other key flows to evaluate possible attack vectors and mitigate them.
@@ -630,7 +568,6 @@ Here’s a breakdown of how to prevent insecure design with practical steps:
 
 - **Example:** During threat modeling, identify that a failure to encrypt user credentials could allow attackers to intercept and use them. As a result, the team decides to enforce **end-to-end encryption** for all data exchanges involving sensitive information.
 
----
 
 ### 4. **Integrate Security Language and Controls into User Stories**
 
@@ -643,7 +580,6 @@ Here’s a breakdown of how to prevent insecure design with practical steps:
 
 - **Example:** A user story about **password reset** might include security requirements such as ensuring that **passwords are hashed** and **secure communication channels (SSL/TLS)** are used to send reset links.
 
----
 
 ### 5. **Integrate Plausibility Checks at Each Tier of Your Application**
 
@@ -656,8 +592,6 @@ Here’s a breakdown of how to prevent insecure design with practical steps:
 
 - **Example:** On the frontend, validate that user inputs, such as email addresses, conform to the correct format. On the backend, check that all input data is sanitized before querying the database.
 
----
-
 ### 6. **Write Unit and Integration Tests to Validate Critical Flows Against the Threat Model**
 
 - **What it involves:** **Unit tests** and **integration tests** should be written to ensure that critical application flows are secure and resistant to known threats.
@@ -669,8 +603,6 @@ Here’s a breakdown of how to prevent insecure design with practical steps:
 
 - **Example:** Write a test for a user login flow that checks whether invalid login attempts are appropriately blocked after a set number of retries (defending against brute force attacks).
 
----
-
 ### 7. **Segregate Tier Layers on the System and Network Layers Depending on Exposure and Protection Needs**
 
 - **What it involves:** **Segregating system and network layers** ensures that sensitive components are protected and isolated from lower-risk areas.
@@ -681,7 +613,6 @@ Here’s a breakdown of how to prevent insecure design with practical steps:
 
 - **Example:** Place the **database** in a private subnet, accessible only by backend services, and expose only the API layer to the public network.
 
----
 
 ### 8. **Segregate Tenants Robustly by Design Throughout All Tiers**
 
@@ -694,8 +625,6 @@ Here’s a breakdown of how to prevent insecure design with practical steps:
 
 - **Example:** For a SaaS platform, ensure that data from different customers (tenants) is stored in separate databases or at least different schemas, so that data leakage between tenants is prevented.
 
----
-
 ### 9. **Limit Resource Consumption by User or Service**
 
 - **What it involves:** To prevent **denial-of-service (DoS)** attacks and abuse, limit the resources (CPU, memory, bandwidth, etc.) a single user or service can consume.
@@ -707,11 +636,6 @@ Here’s a breakdown of how to prevent insecure design with practical steps:
 
 - **Example:** Implement an API rate limit that restricts users to 100 requests per minute to prevent a DoS attack.
 
----
-
-### **Conclusion**
-
-By implementing the above practices, you can proactively reduce the risk of insecure design in your applications. The key is to integrate security throughout the software development lifecycle, leveraging secure design patterns, threat modeling, secure coding practices, and security testing at every stage. Secure design should not be an afterthought, but a core part of your development process, ensuring that applications are both functional and secure from the outset.
 ### **Example Attack Scenarios: Insecure Design and Flaws**
 
 #### **Scenario #1: Insecure Credential Recovery Process**
@@ -728,7 +652,6 @@ An attacker can attempt to compromise an account by answering security questions
 - **Remove security questions** entirely and replace them with more secure authentication mechanisms such as **multi-factor authentication (MFA)**, where something the user knows (e.g., a password) is combined with something the user has (e.g., a phone for OTP or a hardware token).
 - **Use email or SMS-based password recovery** instead of relying on user knowledge-based answers.
 
----
 
 #### **Scenario #2: Exploiting Group Booking Discounts and Deposit Requirement**
 **Description:**
@@ -744,8 +667,6 @@ An attacker might send multiple booking requests, bypassing the deposit requirem
 - Implement **rate limiting** and **transaction throttling** to prevent bulk booking by a single user or entity.
 - Integrate **business logic checks** that analyze the booking pattern, such as monitoring for rapid and repeated bookings from the same user or IP address.
 - Add **fraud detection mechanisms** that check for abnormal booking behavior (e.g., unusually high numbers of tickets bought in a short period) and flag these transactions for review.
-
----
 
 #### **Scenario #3: Scalper Bot Attacks on E-commerce Website**
 **Description:**
@@ -765,8 +686,6 @@ In this case, the e-commerce website does not have **bot protection mechanisms**
 - Apply **CAPTCHA** or other challenge-response tests (e.g., **JavaScript fingerprinting**) to verify that users are human.
 - **Introduce purchase limits** for high-demand items (e.g., a maximum of 1 or 2 per customer).
 - Use **machine learning algorithms** to detect and block unusual buying patterns or transactions made in seconds.
-  
----
 
 ### **Conclusion**
 Each of the attack scenarios highlighted here represents a **design flaw** that makes the system vulnerable to exploitation. While secure coding and implementation are essential, the foundation for preventing many of these attacks starts in the **design phase**. To prevent such vulnerabilities:
@@ -789,8 +708,6 @@ CWE-20 (Improper Input Validation) refers to situations where an application fai
 - Accepting inputs that do not conform to expected types, formats, or value ranges.
 
 Improper input validation can lead to severe security vulnerabilities and bugs in your application. The solution is always to validate the inputs and ensure they meet expected criteria.
-
----
 
 ### **Real-Time Scenarios:**
 
@@ -947,10 +864,6 @@ Client-side validation is often bypassed by attackers, so it should not be the o
 
 ---
 
-### **Conclusion:**
-
-**CWE-20: Improper Input Validation** is a critical vulnerability that can have wide-ranging impacts on an application, from data corruption to security breaches. By following proper input validation practices, such as validating data types, length, and ensuring that inputs meet expected formats, you can significantly reduce the risk of this vulnerability. Always rely on **whitelisting** valid inputs, avoid **blacklisting** invalid inputs, and validate both on the client and server side to ensure comprehensive security.
-**CWE-693: Protection Mechanism Failure**
 
 CWE-693, "Protection Mechanism Failure," refers to flaws in systems where essential protection mechanisms, such as encryption, authentication, or authorization, are either not implemented, improperly configured, or entirely bypassed. This failure can result in the exposure of sensitive data or unauthorized access to critical systems, making it a significant security risk in various environments.
 
@@ -1056,8 +969,6 @@ Here are some real-world examples that cover different facets of **CWE-693**:
    **Example**:
    Using non-secure HTTP or unencrypted communication for external APIs leads to risks of MITM attacks. Always use HTTPS and validate the identity of external systems via certificates.
 
----
-
 ### Conclusion
 
 CWE-693 focuses on failures related to protecting data and systems through insufficient or poorly implemented protection mechanisms. Real-time examples like poor encryption, weak authentication, and flawed session management all showcase potential vulnerabilities that fall under this category. 
@@ -1071,7 +982,6 @@ CWE-693 focuses on failures related to protecting data and systems through insuf
 By doing so, you minimize the risks of unauthorized access, data breaches, and other security incidents.
 Here’s an expanded explanation of the scenarios for **CWE-209**, **CWE-256**, **CWE-501**, and **CWE-522**, with detailed *Do's* and *Don'ts*:
 
----
 
 ### **CWE-209: Generation of Error Message Containing Sensitive Information**
 
@@ -1096,8 +1006,6 @@ Here’s an expanded explanation of the scenarios for **CWE-209**, **CWE-256**, 
 3. **Show Configuration Details**:
    - Avoid outputting paths, usernames, or sensitive data in errors.
 
----
-
 ### **CWE-256: Unprotected Storage of Credentials**
 
 #### **Scenario**:
@@ -1121,7 +1029,6 @@ Here’s an expanded explanation of the scenarios for **CWE-209**, **CWE-256**, 
 3. **Share Sensitive Files**:
    - Avoid sharing configuration files with credentials in unsecured channels.
 
----
 
 ### **CWE-501: Trust Boundary Violation**
 
@@ -1146,8 +1053,6 @@ Here’s an expanded explanation of the scenarios for **CWE-209**, **CWE-256**, 
 3. **Fail to Implement Audit Logs**:
    - Ensure all boundary-crossing activities are logged and monitored.
 
----
-
 ### **CWE-522: Insufficiently Protected Credentials**
 
 #### **Scenario**:
@@ -1171,8 +1076,6 @@ Here’s an expanded explanation of the scenarios for **CWE-209**, **CWE-256**, 
 3. **Use Weak Hashing**:
    - Avoid MD5, SHA1, or other obsolete hashing methods for password storage.
 
----
-
 ### **Real-World Examples**
 
 #### **CWE-209: Exposing Stack Traces**:
@@ -1187,5 +1090,4 @@ Here’s an expanded explanation of the scenarios for **CWE-209**, **CWE-256**, 
 #### **CWE-522: Weak Hashing**:
 - An e-commerce website stores passwords hashed using MD5. An attacker with database access quickly cracks the hashes using rainbow tables.
 
----
 
