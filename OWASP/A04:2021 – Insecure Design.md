@@ -728,3 +728,67 @@ Here’s a breakdown of how to prevent insecure design with practical steps:
 ### **Conclusion**
 
 By implementing the above practices, you can proactively reduce the risk of insecure design in your applications. The key is to integrate security throughout the software development lifecycle, leveraging secure design patterns, threat modeling, secure coding practices, and security testing at every stage. Secure design should not be an afterthought, but a core part of your development process, ensuring that applications are both functional and secure from the outset.
+### **Example Attack Scenarios: Insecure Design and Flaws**
+
+#### **Scenario #1: Insecure Credential Recovery Process**
+**Description:**
+A typical example of insecure design in credential recovery involves the use of **security questions and answers**. While they may seem convenient for verifying a user’s identity, they are **easily guessable or discoverable**. Often, users’ answers to common security questions (e.g., "What is your mother’s maiden name?") can be found through social engineering, public information, or simple guessing.
+
+**Vulnerability:**
+This practice violates several industry standards and guidelines, including **NIST 800-63b** (Digital Identity Guidelines) and the **OWASP ASVS** (Application Security Verification Standard). The core issue is that such questions cannot be relied upon as trustworthy indicators of identity because answers to security questions are often **predictable** or **publicly accessible** (e.g., via social media profiles).
+
+**How This Could Be Exploited:**
+An attacker can attempt to compromise an account by answering security questions, potentially using information gathered from public sources (e.g., a user’s social media). If an attacker gains access to the user’s account, they can potentially change sensitive details, such as the password, and access confidential information.
+
+**Mitigation:**
+- **Remove security questions** entirely and replace them with more secure authentication mechanisms such as **multi-factor authentication (MFA)**, where something the user knows (e.g., a password) is combined with something the user has (e.g., a phone for OTP or a hardware token).
+- **Use email or SMS-based password recovery** instead of relying on user knowledge-based answers.
+
+---
+
+#### **Scenario #2: Exploiting Group Booking Discounts and Deposit Requirement**
+**Description:**
+Imagine a cinema chain offers **group booking discounts** where customers booking more than fifteen seats are required to pay a deposit. The business logic of this system is intended to prevent large-scale abuse by requiring deposits when booking large quantities of tickets. However, the system does not account for multiple simultaneous requests or attacks targeting the booking flow.
+
+**Vulnerability:**
+Attackers could **threat model** this flow and attempt to book hundreds or even thousands of seats across multiple cinemas using a few fast and coordinated requests. The vulnerability arises from the system **not enforcing proper checks** on the volume of bookings, especially when the threshold for deposit triggering is bypassed.
+
+**How This Could Be Exploited:**
+An attacker might send multiple booking requests, bypassing the deposit requirement by splitting the booking into several requests of 15 seats or fewer. By doing so, they could effectively book hundreds of tickets without triggering any preventive checks (like deposit requirements), resulting in significant financial loss for the cinema chain.
+
+**Mitigation:**
+- Implement **rate limiting** and **transaction throttling** to prevent bulk booking by a single user or entity.
+- Integrate **business logic checks** that analyze the booking pattern, such as monitoring for rapid and repeated bookings from the same user or IP address.
+- Add **fraud detection mechanisms** that check for abnormal booking behavior (e.g., unusually high numbers of tickets bought in a short period) and flag these transactions for review.
+
+---
+
+#### **Scenario #3: Scalper Bot Attacks on E-commerce Website**
+**Description:**
+A retail chain’s e-commerce website is plagued by **scalper bots**. These bots are used by attackers to rapidly purchase high-demand products, such as high-end video cards, in bulk. The attackers then resell these items on auction sites at a higher price, taking advantage of the limited availability and demand. This leads to **disgruntled customers** and **negative publicity** for the retailer.
+
+**Vulnerability:**
+In this case, the e-commerce website does not have **bot protection mechanisms** in place. Scalpers use automated tools to bypass purchase limits, defeat CAPTCHA tests, and complete transactions far faster than human users could. Without proper **anti-bot measures**, such as rate limiting or behavioral analysis, the retailer is unable to protect its inventory from being hijacked by bots.
+
+**How This Could Be Exploited:**
+- **Scalper bots** could continuously monitor product availability, automatically completing purchases as soon as high-demand products like video cards are released.
+- This results in **rapid inventory depletion**, leaving legitimate customers unable to purchase the items they need.
+- The high-demand products are then resold at inflated prices, negatively affecting both the brand's reputation and customer trust.
+
+**Mitigation:**
+- Implement **bot detection systems** that use techniques such as **behavioral analysis**, where actions like mouse movements, click patterns, and page interactions are analyzed to distinguish between bots and human users.
+- Introduce **rate limiting** to prevent excessive requests from the same user or IP address in a short time frame.
+- Apply **CAPTCHA** or other challenge-response tests (e.g., **JavaScript fingerprinting**) to verify that users are human.
+- **Introduce purchase limits** for high-demand items (e.g., a maximum of 1 or 2 per customer).
+- Use **machine learning algorithms** to detect and block unusual buying patterns or transactions made in seconds.
+  
+---
+
+### **Conclusion**
+Each of the attack scenarios highlighted here represents a **design flaw** that makes the system vulnerable to exploitation. While secure coding and implementation are essential, the foundation for preventing many of these attacks starts in the **design phase**. To prevent such vulnerabilities:
+
+- **Early threat modeling** should be integrated into the development lifecycle to assess and mitigate risks before they can be exploited.
+- **Security controls** like rate limiting, CAPTCHA, and fraud detection should be part of the design from the beginning, not bolted on later.
+- Regular review and updates to the **business logic** and **security controls** will help identify potential attack vectors before they are exploited.
+
+By focusing on secure design practices, businesses can significantly reduce the likelihood of these types of attack scenarios and build applications that are resilient against common security threats.
