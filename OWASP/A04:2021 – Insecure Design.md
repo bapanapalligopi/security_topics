@@ -147,3 +147,149 @@ This category underscores the importance of:
 
 ### Final Notes
 Insecure design vulnerabilities are harder to mitigate post-implementation. By embedding security early in the software development lifecycle, organizations can significantly lower the risks and costs associated with these flaws.
+### **Examples of Insecure Design with Detailed Explanations**
+
+---
+
+### **Example 1: Lack of Session Expiration**
+
+#### Scenario:
+- A web application for online shopping allows users to log in and shop without properly managing **session expiration**.
+- Once a user logs in, their session token remains valid indefinitely until they explicitly log out.
+
+#### Issue:
+- **Insecure Design**: The system was designed without considering scenarios where session tokens could be misused if the user closes the browser without logging out.
+- Attackers could obtain session tokens (via session fixation, network sniffing, or browser exploits) and use them to impersonate the user.
+
+#### Consequences:
+- Unauthorized access to accounts, leading to financial theft, personal data exposure, or fraudulent orders.
+
+#### Prevention:
+1. During the design phase, implement a session expiration mechanism:
+   - Session tokens should expire after a period of inactivity (e.g., 15 minutes).
+   - Use sliding expiration to extend the session for active users.
+2. Include session invalidation during logout or when a token is refreshed.
+
+#### Outcome of Secure Design:
+- Even if an attacker obtains a session token, it would expire within a short window, reducing the risk of misuse.
+
+---
+
+### **Example 2: Missing Multi-Factor Authentication (MFA)**
+
+#### Scenario:
+- A banking application requires only a username and password for login. No additional layer of authentication (e.g., MFA) is implemented.
+
+#### Issue:
+- **Insecure Design**: The system design fails to account for the high risks associated with banking systems, such as credential theft.
+- A phishing attack could trick users into sharing their login details, allowing attackers to access their accounts.
+
+#### Consequences:
+- Unauthorized access to sensitive information and the ability to transfer funds, leading to financial loss and reputational damage.
+
+#### Prevention:
+1. During the design phase, integrate **MFA**:
+   - Add an additional layer, such as one-time passwords (OTPs) sent via SMS/email or authenticator apps.
+   - Use biometric verification for mobile users (e.g., fingerprint or facial recognition).
+2. Ensure MFA is required for sensitive actions like adding a new payee or transferring large sums.
+
+#### Outcome of Secure Design:
+- Even if an attacker obtains the username and password, the lack of access to the second authentication factor prevents unauthorized access.
+
+---
+
+### **Example 3: Poor Role-Based Access Control (RBAC)**
+
+#### Scenario:
+- An enterprise management system provides access to various functionalities (e.g., viewing reports, managing users, and altering financial records).
+- All employees, including junior staff, have equal access rights because the system was not designed with granular roles.
+
+#### Issue:
+- **Insecure Design**: The system doesn’t enforce the principle of **least privilege**, where users are granted only the minimum access necessary to perform their duties.
+- A junior employee could accidentally or maliciously alter financial records, leading to compliance violations or fraud.
+
+#### Consequences:
+- Unauthorized access to sensitive operations, accidental data corruption, or deliberate sabotage.
+
+#### Prevention:
+1. During the design phase, define clear user roles and their permissions:
+   - Example roles: **Admin**, **Manager**, and **Employee**.
+   - Admins manage users and configurations; Managers view reports; Employees access their specific tasks.
+2. Incorporate role-based access checks at every functionality level.
+
+#### Outcome of Secure Design:
+- Employees are limited to their assigned functionalities, reducing the risk of misuse or accidents.
+
+---
+
+### **Example 4: Unencrypted Sensitive Data**
+
+#### Scenario:
+- A healthcare system stores patient records, including personal details and medical history, in a database. The system design doesn’t include encryption for stored data.
+
+#### Issue:
+- **Insecure Design**: Data is stored in plain text, making it vulnerable to unauthorized access if the database is breached.
+- Attackers gaining access to the database can view and misuse sensitive patient information.
+
+#### Consequences:
+- Violations of data privacy laws like HIPAA, fines, lawsuits, and reputational damage.
+
+#### Prevention:
+1. During the design phase, implement **encryption for sensitive data at rest**:
+   - Use strong encryption algorithms like AES-256.
+   - Protect encryption keys using secure key management techniques.
+2. Enforce **data masking** for non-essential users to reduce unnecessary exposure.
+
+#### Outcome of Secure Design:
+- Even if attackers breach the database, encrypted data is unreadable without decryption keys, reducing the risk of sensitive data exposure.
+
+---
+
+### **Example 5: No Rate Limiting on Login Attempts**
+
+#### Scenario:
+- An e-commerce platform allows users to log in without any restrictions on the number of failed login attempts.
+
+#### Issue:
+- **Insecure Design**: The system fails to mitigate brute force attacks where an attacker repeatedly attempts password guesses.
+- An attacker could programmatically try thousands of passwords until they gain access to an account.
+
+#### Consequences:
+- Accounts get compromised, leading to fraud, identity theft, and loss of customer trust.
+
+#### Prevention:
+1. During the design phase, incorporate rate limiting:
+   - Allow only a certain number of failed attempts (e.g., 5) within a specific time frame.
+   - Lock the account temporarily or require CAPTCHA after multiple failed attempts.
+2. Log and monitor suspicious login attempts for further investigation.
+
+#### Outcome of Secure Design:
+- Brute force attempts are thwarted as attackers are locked out after a few failed attempts.
+
+---
+
+### **Example 6: Lack of Secure Default Settings**
+
+#### Scenario:
+- A cloud-based document-sharing application is launched with all documents publicly accessible by default.
+
+#### Issue:
+- **Insecure Design**: The default settings do not prioritize security. Users might unknowingly expose sensitive documents.
+- Attackers could easily search and access public documents using automated tools.
+
+#### Consequences:
+- Leakage of intellectual property, sensitive business documents, and customer data.
+
+#### Prevention:
+1. During the design phase, configure **secure defaults**:
+   - Set documents to private by default.
+   - Require explicit user action to make documents public.
+2. Provide clear user notifications about the implications of changing default settings.
+
+#### Outcome of Secure Design:
+- Sensitive documents remain private unless explicitly shared, reducing accidental data leaks.
+
+---
+
+### **Key Takeaway**:
+**Insecure design flaws arise from poor planning and inadequate security measures during the design phase. To prevent these issues, it’s crucial to integrate security considerations early in the software development lifecycle (SDLC), using strategies like threat modeling, secure patterns, and adhering to established security principles.**
