@@ -792,3 +792,177 @@ Each of the attack scenarios highlighted here represents a **design flaw** that 
 - Regular review and updates to the **business logic** and **security controls** will help identify potential attack vectors before they are exploited.
 
 By focusing on secure design practices, businesses can significantly reduce the likelihood of these types of attack scenarios and build applications that are resilient against common security threats.
+
+
+### **CWE-20: Improper Input Validation**
+
+**Description:**
+CWE-20 (Improper Input Validation) refers to situations where an application fails to validate or sanitize input from the user or other external sources correctly. When input validation is not handled properly, attackers can exploit this vulnerability to inject malicious data or execute unexpected behavior, often leading to other vulnerabilities such as SQL injection, buffer overflows, and command injection.
+
+**Common Causes:**
+- Failing to check or sanitize inputs before processing.
+- Allowing unsanitized user inputs that can manipulate the program’s execution.
+- Accepting inputs that do not conform to expected types, formats, or value ranges.
+
+Improper input validation can lead to severe security vulnerabilities and bugs in your application. The solution is always to validate the inputs and ensure they meet expected criteria.
+
+---
+
+### **Real-Time Scenarios:**
+
+#### **Scenario 1: Web Application Form (Email Validation)**
+
+Imagine you have a form on a website that asks for a user’s email address. If the server fails to validate the input and accepts any string as an email address, malicious users could inject incorrect data, or even attempt to execute XSS (Cross-site Scripting) attacks by injecting scripts.
+
+**Example of improper input validation (CWE-20):**
+```java
+// Example of improper email validation
+public boolean isValidEmail(String email) {
+    // Not validating the email format properly
+    return email != null && !email.isEmpty();
+}
+```
+
+An attacker might enter a script like:
+```
+<script>alert('XSS attack!');</script>
+```
+
+This could lead to XSS vulnerabilities if the input is directly rendered on the web page.
+
+---
+
+#### **Scenario 2: File Upload Handling**
+
+Consider a web application that allows users to upload files. If the application fails to validate the file type and size properly, an attacker could upload a malicious script disguised as an image, potentially leading to remote code execution or unauthorized access.
+
+**Example of improper input validation (CWE-20):**
+```java
+// Example of improper file upload validation
+public void uploadFile(MultipartFile file) {
+    // Not checking the file type properly, only checking the file extension
+    String fileName = file.getOriginalFilename();
+    if (fileName.endsWith(".exe")) {
+        throw new RuntimeException("Executable files are not allowed!");
+    }
+    // Only checking the file extension, not MIME type or contents.
+    // Risk of uploading malicious file disguised as image or document
+    fileService.save(file);
+}
+```
+
+An attacker could upload a `.exe` file disguised as a `.jpg` file, which could lead to malicious execution if the file is executed.
+
+---
+
+### **Best Practices for Proper Input Validation (CWE-20 Mitigation)**
+
+To mitigate the risks of CWE-20, input validation should be thorough, context-sensitive, and focused on both **client-side** and **server-side**. Below are steps and practices that you should follow to ensure input validation is done correctly:
+
+1. **Enforce Input Types**: Make sure that the input types are validated according to what is expected (e.g., strings, integers, dates, etc.).
+
+2. **Whitelist Validation**: Validate inputs against a **whitelist** of allowed characters or formats. This is far more secure than a blacklist approach, which could still let attackers pass unexpected characters through.
+
+3. **Length and Size Limits**: Always check that the length and size of the input are within a reasonable and acceptable range.
+
+4. **Use Built-In Validation Libraries**: Use established libraries for validation (such as **Apache Commons Validator**, **Spring Validation**, etc.) to ensure correct formats (e.g., for emails, phone numbers).
+
+5. **Escaping Output**: When displaying user input back in the user interface, always escape the content to prevent attacks like XSS.
+
+---
+
+### **Practice Code: Do's and Don'ts for CWE-20 in Java**
+
+#### **Do's (Best Practices)**
+
+1. **Validate Email Format Correctly:**
+   Use regular expressions or libraries to properly validate an email address format.
+
+```java
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public boolean isValidEmail(String email) {
+    String regex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+    Pattern pattern = Pattern.compile(regex);
+    Matcher matcher = pattern.matcher(email);
+    return matcher.matches();
+}
+```
+
+2. **Limit Input Length and Validate File Type:**
+   Ensure that uploaded files are of the expected type and size.
+
+```java
+public void uploadFile(MultipartFile file) {
+    // Validate file size (e.g., 10 MB max)
+    if (file.getSize() > 10 * 1024 * 1024) { // 10 MB
+        throw new RuntimeException("File size exceeds the limit!");
+    }
+
+    // Validate file type by MIME type
+    String mimeType = file.getContentType();
+    if (!mimeType.equals("image/png") && !mimeType.equals("image/jpeg")) {
+        throw new RuntimeException("Invalid file type! Only PNG and JPEG are allowed.");
+    }
+
+    // Proceed to save the file
+    fileService.save(file);
+}
+```
+
+3. **Whitelist-Based Input Validation for Numbers:**
+
+```java
+public boolean isValidAge(int age) {
+    return age > 0 && age < 120; // Valid age range
+}
+```
+
+---
+
+#### **Don'ts (Avoid these practices)**
+
+1. **Don't Trust Unfiltered User Input (CWE-20)**
+
+```java
+// Bad example: Allowing unsanitized user input (CWE-20)
+public boolean isValidEmail(String email) {
+    // Not validating email format, just checking if it's not null
+    return email != null && !email.isEmpty();
+}
+```
+
+This approach doesn't verify whether the email is in a valid format, leaving the system vulnerable to malicious inputs.
+
+2. **Don't Use Blacklists for Input Validation**
+
+```java
+// Bad example: Using blacklists (this approach is risky)
+public boolean isValidFile(String fileName) {
+    if (fileName.contains("..") || fileName.contains("/")) {
+        return false; // Blacklisting file paths with ".." or "/"
+    }
+    return true;
+}
+```
+
+This is insecure because attackers may use other techniques to bypass the blacklist (e.g., URL encoding or using other symbols). A better approach is using **whitelists** and **type validation**.
+
+3. **Don't Rely on Client-Side Validation Alone**
+
+```html
+<!-- Bad example: Only using client-side validation (no server-side validation) -->
+<form onsubmit="return validateEmail()">
+  <input type="email" id="email" required>
+  <input type="submit" value="Submit">
+</form>
+```
+
+Client-side validation is often bypassed by attackers, so it should not be the only form of input validation. Always validate user input on the **server side** as well.
+
+---
+
+### **Conclusion:**
+
+**CWE-20: Improper Input Validation** is a critical vulnerability that can have wide-ranging impacts on an application, from data corruption to security breaches. By following proper input validation practices, such as validating data types, length, and ensuring that inputs meet expected formats, you can significantly reduce the risk of this vulnerability. Always rely on **whitelisting** valid inputs, avoid **blacklisting** invalid inputs, and validate both on the client and server side to ensure comprehensive security.
